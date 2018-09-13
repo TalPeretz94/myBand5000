@@ -376,8 +376,8 @@ public class BandsArrayList implements List<Band> {
 	}
 
 	@Override
-	public Object[] toArray() {
-		Object[] trimmedArr = (Object[]) new Object[getSize()];
+	public Band[] toArray() {
+		Band[] trimmedArr = new Band[getSize()];
         System.arraycopy(bandArr, 0, trimmedArr, 0, getSize());
         return trimmedArr;
 	}
