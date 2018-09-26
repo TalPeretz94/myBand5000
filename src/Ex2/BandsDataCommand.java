@@ -1,7 +1,7 @@
 package Ex2;
 
 public interface BandsDataCommand {
-    public void execute();
+	public void execute();
 
-    public void undo();
+	public void undo();
 }

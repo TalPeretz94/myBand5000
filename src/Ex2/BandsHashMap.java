@@ -1,16 +1,18 @@
 package Ex2;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import Ex2.*;
+
 public class BandsHashMap implements Map<String, Band> {
 
 	private BandEntry[] table;
 	private int size;
 
-	private  int getSize() {
+	private int getSize() {
 		return size;
 	}
 
@@ -178,11 +180,11 @@ public class BandsHashMap implements Map<String, Band> {
 	@Override
 	public Collection<Band> values() {
 		Collection<Band> values = new BandsArrayList();
-		
-		for(String currKey : keySet()) {
+
+		for (String currKey : keySet()) {
 			values.add(this.get(currKey));
 		}
-		
+
 		return values;
 	}
 

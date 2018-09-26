@@ -100,19 +100,21 @@ public class Band implements Serializable {
 		this.style = style;
 	}
 
-//	private void writeObject(ObjectOutputStream out,Band band) throws IOException {
-//		//out.defaultWriteObject();
-//		out.writeObject(band);
-//
-//		
-//
-//	}
-//
-//	public static Band readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-//		Band newBand = null;
-//		//in.defaultReadObject();
-//		newBand = (Band) in.readObject();
-//		return newBand;
-//
-//	}
+	// private void writeObject(ObjectOutputStream out,Band band) throws IOException
+	// {
+	// //out.defaultWriteObject();
+	// out.writeObject(band);
+	//
+	//
+	//
+	// }
+	//
+	// public static Band readObject(ObjectInputStream in) throws IOException,
+	// ClassNotFoundException {
+	// Band newBand = null;
+	// //in.defaultReadObject();
+	// newBand = (Band) in.readObject();
+	// return newBand;
+	//
+	// }
 }

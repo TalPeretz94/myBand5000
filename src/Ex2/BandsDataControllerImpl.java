@@ -6,16 +6,43 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Stack;
 
+import com.sun.webkit.ThemeClient;
+
 public class BandsDataControllerImpl implements BandsDataController {
 	private BandsArrayList bandArr;
+
 	private ListIterator<Band> iter;
 	private BandsHashMap bandMap;
 	private Stack<BandsDataCommand> commandsStackMem = new Stack<>();
+
+	public Stack<BandsDataCommand> getCommandsStackMem() {
+		return commandsStackMem;
+	}
+
 	private Band theLastBand;
+
+	public Band getTheLastBand() {
+		return theLastBand;
+	}
+
+	private Band bandAfterRemove;
+
+	public Band getBandAfterRemove() {
+		return bandAfterRemove;
+	}
+
 	private BandDataAccessObject bandData;
+
+	public BandDataAccessObject getBandData() {
+		return bandData;
+	}
 
 	public BandsArrayList getBandArr() {
 		return bandArr;
+	}
+
+	public void setBandArr(BandsArrayList bandArr) {
+		this.bandArr = bandArr;
 	}
 
 	public BandsHashMap getBandMap() {
@@ -90,6 +117,8 @@ public class BandsDataControllerImpl implements BandsDataController {
 	public void undo() {
 		if (!commandsStackMem.isEmpty()) {
 			commandsStackMem.pop().undo();
+		} else {
+			theLastBand = null;
 		}
 
 	}
@@ -116,6 +145,8 @@ public class BandsDataControllerImpl implements BandsDataController {
 	class Sort implements BandsDataCommand {
 
 		BandsArrayList memCpy;
+		Band tempLast;
+		int tempIter;
 		Comparator<Band> comparator;
 
 		public Sort(Comparator<Band> comparator) {
@@ -126,12 +157,19 @@ public class BandsDataControllerImpl implements BandsDataController {
 		@Override
 		public void execute() {
 			memCpy = new BandsArrayList(bandArr);
-			bandArr.sort(comparator);
+			tempLast = theLastBand;
+			tempIter = iter.nextIndex();
+			bandArr.Sort(comparator);
+			iter = bandArr.listIterator();
+			theLastBand = iter.next();
 		}
 
 		@Override
 		public void undo() {
 			bandArr = memCpy;
+			theLastBand = tempLast;
+			iter = bandArr.listIterator(tempIter);
+
 		}
 
 	}
@@ -150,7 +188,9 @@ public class BandsDataControllerImpl implements BandsDataController {
 			} else {
 				iter = bandArr.listIterator();
 				item = iter.next();
+
 			}
+			theLastBand = item;
 
 		}
 
@@ -159,16 +199,18 @@ public class BandsDataControllerImpl implements BandsDataController {
 			if (iter.hasPrevious()) {
 				item = iter.previous();
 			} else {
-				iter = bandArr.listIterator(bandArr.size() - 1);
+				iter = bandArr.listIterator(bandArr.size());
 				item = iter.previous();
+
 			}
+			theLastBand = item;
 
 		}
 
 	}
-	
-	class Previous implements BandsDataCommand{
-		
+
+	class Previous implements BandsDataCommand {
+
 		private Band item;
 
 		public Band Get() {
@@ -183,7 +225,8 @@ public class BandsDataControllerImpl implements BandsDataController {
 				iter = bandArr.listIterator(bandArr.size());
 				item = iter.previous();
 			}
-			
+			theLastBand = item;
+
 		}
 
 		@Override
@@ -194,9 +237,10 @@ public class BandsDataControllerImpl implements BandsDataController {
 				iter = bandArr.listIterator();
 				item = iter.next();
 			}
-			
+			theLastBand = item;
+
 		}
-		
+
 	}
 
 	class Add implements BandsDataCommand {
@@ -222,40 +266,39 @@ public class BandsDataControllerImpl implements BandsDataController {
 	}
 
 	class Remove implements BandsDataCommand {
-		
 
+		private Band theBand;
+
+		private int index;
+
+		public Remove() {
+
+		}
 
 		@Override
 		public void execute() {
+			index = bandArr.indexOf(theLastBand);
+
 			bandArr.remove(theLastBand);
 			bandMap.remove(theLastBand.getName(), theLastBand);
+
+			theBand = theLastBand;
+			if (index == bandArr.getSize()) {
+				theLastBand = bandArr.get(0);
+			} else {
+				theLastBand = bandArr.get(index);
+
+			}
 
 		}
 
 		@Override
 		public void undo() {
-			bandArr.add(theLastBand);
-			bandMap.put(theLastBand.getName(), theLastBand);
+			bandArr.add(index, theBand);
+			bandMap.put(theBand.getName(), theBand);
+			theLastBand = theBand;
 
 		}
 	}
 
 }
-
-// class NameSort implements Comparator<Band>
-// {
-//
-// @Override
-// public int compare(Band o1, Band o2) {
-// return (o1.getName().compareTo(o2.getName()));
-//
-// }
-//
-// }
-// public static void SortByName(BandsDataControllerImpl bsc) {
-//
-// bsc.sort((o1,o2)-> {
-// return (o1.getName().compareTo(o2.getName()));
-// });
-//
-// }

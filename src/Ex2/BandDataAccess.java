@@ -3,9 +3,9 @@ package Ex2;
 import java.io.IOException;
 
 public interface BandDataAccess {
-    BandsArrayList readAllBands() throws IOException, ClassNotFoundException;
+	BandsArrayList readAllBands() throws IOException, ClassNotFoundException;
 
-    BandsHashMap getBandsMappedByName() throws IOException, ClassNotFoundException;
+	BandsHashMap getBandsMappedByName() throws IOException, ClassNotFoundException;
 
-    void saveBands(Band[] bands) throws IOException;
+	void saveBands(Band[] bands) throws IOException;
 }

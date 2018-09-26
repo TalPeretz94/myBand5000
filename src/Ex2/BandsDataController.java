@@ -4,21 +4,21 @@ import java.io.IOException;
 import java.util.Comparator;
 
 public interface BandsDataController {
-    Band previous();
+	Band previous();
 
-    Band next();
+	Band next();
 
-    void sort(Comparator<Band> comparator);
+	void sort(Comparator<Band> comparator);
 
-    void add(Band band);
+	void add(Band band);
 
-    void remove();
+	void remove();
 
-    void undo();
+	void undo();
 
-    void revert();
+	void revert();
 
-    void save() throws IOException;
+	void save() throws IOException;
 
-    Band getBandByName(String name);
+	Band getBandByName(String name);
 }

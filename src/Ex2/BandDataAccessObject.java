@@ -65,7 +65,7 @@ public class BandDataAccessObject implements BandDataAccess {
 
 		}
 		for (int i = 0; i < obj.length; i++) {
-			
+
 			myMap.put(((Band) obj[i]).getName(), (Band) obj[i]);
 		}
 
